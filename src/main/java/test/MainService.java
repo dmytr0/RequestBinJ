@@ -19,16 +19,28 @@ public class MainService {
         lruMap = createLRUMap(50);
     }
 
-    public void add(String s, HttpHeaders headers) {
+    public void add(String s, HttpHeaders headers, Map<String, String> params) {
         StringBuilder value = new StringBuilder();
-        if (s != null) {
-            value.append(s);
-        }
-
         if (headers != null) {
-            value.append("<br>Headers:<br>");
+            value.append("<font size=\"3\" color=\"red\">");
+            value.append("<b>HEADERS:</b><br>");
             headers.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
             lruMap.put(LocalDateTime.now(), value);
+            value.append("</font>");
+        }
+
+        if (params != null) {
+            value.append("<font size=\"3\" color=\"green\">");
+            value.append("<br><b>PARAMS:</b><br>");
+            params.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
+            lruMap.put(LocalDateTime.now(), value);
+            value.append("</font>");
+        }
+
+        if (s != null) {
+            value.append("<br><b>BODY:</b><br>");
+            value.append(s);
+
         }
     }
 

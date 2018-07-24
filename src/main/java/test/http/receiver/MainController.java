@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import test.MainService;
 
+import java.util.Map;
+
 import static org.springframework.web.bind.annotation.RequestMethod.*;
 
 @RestController
@@ -18,9 +20,11 @@ public class MainController {
 
     @RequestMapping(value = "/test", method = {GET, POST, PUT, DELETE})
     @ResponseStatus(HttpStatus.OK)
-    public String test(@RequestBody(required=false) String request, @RequestHeader HttpHeaders headers) throws InterruptedException {
+    public String test(@RequestBody(required = false) String request,
+                       @RequestHeader(required = false) HttpHeaders headers,
+                       @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
-        service.add(request, headers);
+        service.add(request, headers, params);
 
         log.info("Ok");
         return "{\"message\":\"HELLO WORLD\"}";
