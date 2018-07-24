@@ -18,13 +18,16 @@ public class MainService {
     }
 
     public void add(String s, HttpHeaders headers) {
-        lruMap.put(LocalDateTime.now(), s + "<br>Headers:<br>" + headers);
+        StringBuilder value = new StringBuilder(s);
+        value.append("<br>Headers:<br>");
+        headers.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
+        lruMap.put(LocalDateTime.now(), value);
     }
 
     public String getAll() {
         StringBuilder sb = new StringBuilder();
         lruMap.forEach((k, v) -> {
-            sb.append(k).append("<br>").append(v).append("<br>------------------<br>");
+            sb.append(k).append("<br>").append(v).append("<br><hr><br>");
         });
 
         return sb.toString();
