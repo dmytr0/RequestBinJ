@@ -4,10 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import test.MainService;
 
 import static org.springframework.web.bind.annotation.RequestMethod.*;
@@ -21,7 +18,7 @@ public class MainController {
 
     @RequestMapping(value = "/test", method = {GET, POST, PUT, DELETE})
     @ResponseStatus(HttpStatus.OK)
-    public String test(String request, @RequestHeader HttpHeaders headers) throws InterruptedException {
+    public String test(@RequestBody String request, @RequestHeader HttpHeaders headers) throws InterruptedException {
 
         service.add(request, headers);
 
