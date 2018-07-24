@@ -57,4 +57,8 @@ public class MainService {
             }
         };
     }
+
+    public void removeAll() {
+        lruMap.clear();
+    }
 }

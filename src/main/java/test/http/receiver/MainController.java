@@ -36,4 +36,13 @@ public class MainController {
         return service.getAll();
 
     }
+
+    @RequestMapping(value = "/reset", method = GET)
+    @ResponseStatus(HttpStatus.OK)
+    public String removeAll() {
+
+        service.removeAll();
+
+        return "OK";
+    }
 }
