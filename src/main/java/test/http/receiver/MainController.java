@@ -18,7 +18,7 @@ public class MainController {
 
     @RequestMapping(value = "/test", method = {GET, POST, PUT, DELETE})
     @ResponseStatus(HttpStatus.OK)
-    public String test(@RequestBody String request, @RequestHeader HttpHeaders headers) throws InterruptedException {
+    public String test(@RequestBody(required=false) String request, @RequestHeader HttpHeaders headers) throws InterruptedException {
 
         service.add(request, headers);
 
