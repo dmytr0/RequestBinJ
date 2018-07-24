@@ -4,6 +4,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,7 +27,6 @@ public class MainService {
 
         if (headers != null) {
             value.append("<br>Headers:<br>");
-
             headers.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
             lruMap.put(LocalDateTime.now(), value);
         }
@@ -33,9 +34,9 @@ public class MainService {
 
     public String getAll() {
         StringBuilder sb = new StringBuilder();
-        lruMap.forEach((k, v) -> {
-            sb.append(k).append("<br>").append(v).append("<br><hr><br>");
-        });
+        ArrayList<Map.Entry<Object, Object>> entries = new ArrayList<>(lruMap.entrySet());
+        Collections.reverse(entries);
+        entries.forEach(e -> sb.append(e.getKey()).append("<br>").append(e.getValue()).append("<br><hr><br>"));
 
         return sb.toString();
     }
