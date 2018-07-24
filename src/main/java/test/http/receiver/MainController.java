@@ -29,7 +29,7 @@ public class MainController {
         return "{\"message\":\"HELLO WORLD\"}";
     }
 
-    @RequestMapping(value = "/view", method = GET)
+    @RequestMapping(value = "/view", method = GET, produces = "text/html")
     @ResponseStatus(HttpStatus.OK)
     public String getResult() {
 
