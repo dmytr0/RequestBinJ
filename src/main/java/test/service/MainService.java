@@ -1,4 +1,4 @@
-package test;
+package test.service;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
@@ -19,8 +19,9 @@ public class MainService {
         lruMap = createLRUMap(50);
     }
 
-    public void add(String s, HttpHeaders headers, Map<String, String> params) {
+    public void add(String method, String s, HttpHeaders headers, Map<String, String> params) {
         StringBuilder value = new StringBuilder();
+        value.append("<h1>" + method + "</h1>");
         if (headers != null) {
             value.append("<font size=\"3\" color=\"red\">");
             value.append("<b>HEADERS:</b><br>");

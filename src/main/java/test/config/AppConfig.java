@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @PropertySource(value = {"classpath:application.properties", "classpath:build.properties"}, encoding = "UTF-8")
-@ComponentScan("com.test")
+@ComponentScan("test")
 @EnableAsync
 @EnableScheduling
 public class AppConfig {
