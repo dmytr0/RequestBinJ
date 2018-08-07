@@ -1,6 +1,7 @@
 package test.service;
 
 import org.springframework.stereotype.Service;
+import test.domain.MyResponse;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,31 +14,35 @@ public class ResponseService {
     public static final String POST = "POST";
     public static final String PUT = "PUT";
     public static final String DELETE = "DELETE";
-    private Map<String, String> responses = new HashMap<>();
+    private Map<String, MyResponse> responses = new HashMap<>();
 
-    public void addResponse(String method, String body){
-        responses.put(method, body);
+    public void addResponse(String method, MyResponse response){
+        responses.put(method, response);
     }
 
-    public void addResponse(String body){
-        responses.put(ALL, body);
+    public void addResponse(MyResponse response){
+        responses.put(ALL, response);
     }
 
     public void deleteResponse(String method){
         responses.remove(method);
     }
 
-    public String get(String method) {
-        String s = responses.get(method);
-        if(s == null) {
-            s = responses.get(ALL);
+    public MyResponse get(String method) {
+        MyResponse resp = responses.get(method);
+        if(resp == null) {
+            resp = responses.get(ALL);
         }
 
         if (responses ==null) {
-            s = "{\"message\":\"HELLO WORLD\"}";
+            resp = new MyResponse("{\"answer\":\"OK\"}");
         }
 
-        return s;
+        return resp;
     }
 
+    public Map<String, MyResponse> getAll() {
+        return responses;
+
+    }
 }

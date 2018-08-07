@@ -3,6 +3,7 @@ package test.http.receiver;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import test.domain.MyRequestEntity;
 import test.service.MainService;
@@ -24,63 +25,57 @@ public class MainController {
 
     @GetMapping(value = "/test")
     @ResponseStatus(HttpStatus.OK)
-    public String testGet(@RequestBody(required = false) String request,
-                          @RequestHeader(required = false) Map<String, String> headers,
-                          @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
+    public ResponseEntity testGet(@RequestBody(required = false) String request,
+                                  @RequestHeader(required = false) Map<String, String> headers,
+                                  @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
         String method = ResponseService.GET;
         service.add(method, request, headers, params);
 
         log.info("Ok " + method);
-        return responseService.get(method);
+        return responseService.get(method).entity();
     }
 
     @PostMapping(value = "/test")
     @ResponseStatus(HttpStatus.OK)
-    public String testPost(@RequestBody(required = false) String request,
-                           @RequestHeader(required = false) Map<String, String> headers,
-                           @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
+    public ResponseEntity testPost(@RequestBody(required = false) String request,
+                                   @RequestHeader(required = false) Map<String, String> headers,
+                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
         String method = ResponseService.POST;
         service.add(method, request, headers, params);
 
         log.info("Ok " + method);
-        return responseService.get(method);
+        return responseService.get(method).entity();
     }
 
 
     @PutMapping(value = "/test")
     @ResponseStatus(HttpStatus.OK)
-    public String testPut(@RequestBody(required = false) String request,
-                          @RequestHeader(required = false) Map<String, String> headers,
-                          @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
+    public ResponseEntity testPut(@RequestBody(required = false) String request,
+                                  @RequestHeader(required = false) Map<String, String> headers,
+                                  @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
         String method = ResponseService.PUT;
         service.add(method, request, headers, params);
 
         log.info("Ok " + method);
-        return responseService.get(method);
+        return responseService.get(method).entity();
     }
 
 
     @DeleteMapping(value = "/test")
     @ResponseStatus(HttpStatus.OK)
-    public String testDelete(@RequestBody(required = false) String request,
-                             @RequestHeader(required = false) Map<String, String> headers,
-                             @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
+    public ResponseEntity testDelete(@RequestBody(required = false) String request,
+                                     @RequestHeader(required = false) Map<String, String> headers,
+                                     @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
         String method = ResponseService.DELETE;
         service.add(method, request, headers, params);
         log.info("Ok " + method);
-        return responseService.get(method);
+        return responseService.get(method).entity();
     }
 
-
-    @GetMapping(value = "/view", produces = "text/html")
-    @ResponseStatus(HttpStatus.OK)
-    public String getResult() {
-        return service.getAll();
-    }
 
     @GetMapping(value = "/api/listrequests")
     @ResponseStatus(HttpStatus.OK)
