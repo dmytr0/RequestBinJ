@@ -1,0 +1,46 @@
+table {
+    border-collapse: collapse;
+    border: solid 1px #196328;
+    max-width: 800px;
+}
+
+td, th {
+    border: 1px dotted #999;
+    text-align: left;
+    padding: 5px;
+}
+
+td.method {
+    color: red;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+td.request_id {
+    text-align: right;
+    color: grey;
+}
+td.request_time {
+    color: green;
+    min-width: 125px;
+}
+ul.headers {
+    list-style-type: none;
+    margin: 10px;
+    padding: 0;
+}
+span.hvalue {
+    color: #9400d3;
+}
+td.body_value {
+    color: #ff0000;
+}
+
+.name {
+    color: blue;
+}
+
+span.hname {
+    color: brown;
+    margin-right: 1em;
+}

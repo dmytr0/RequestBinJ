@@ -1,32 +1,30 @@
 package test.service;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
+import test.domain.MyRequestEntity;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class MainService {
 
     Map<Object, Object> lruMap;
 
+    private LinkedList<MyRequestEntity> requests = new LinkedList<>();
+
     public MainService() {
 
         lruMap = createLRUMap(50);
     }
 
-    public void add(String method, String s, HttpHeaders headers, Map<String, String> params) {
+    public void add(String method, String body, Map<String, String> headers, Map<String, String> params) {
         StringBuilder value = new StringBuilder();
         value.append("<h1>" + method + "</h1>");
         if (headers != null) {
             value.append("<font size=\"3\" color=\"red\">");
             value.append("<b>HEADERS:</b><br>");
             headers.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
-            lruMap.put(LocalDateTime.now(), value);
             value.append("</font>");
         }
 
@@ -34,15 +32,18 @@ public class MainService {
             value.append("<font size=\"3\" color=\"green\">");
             value.append("<br><b>PARAMS:</b><br>");
             params.forEach((h, v) -> value.append(h).append(": ").append(v).append("<br>"));
-            lruMap.put(LocalDateTime.now(), value);
             value.append("</font>");
         }
 
-        if (s != null) {
+        if (body != null) {
             value.append("<br><b>BODY:</b><br>");
-            value.append(s);
+            value.append(body);
 
         }
+
+        requests.addFirst(new MyRequestEntity(method, body, headers, params));
+
+        lruMap.put(LocalDateTime.now(), value.toString());
     }
 
     public String getAll() {
@@ -73,5 +74,14 @@ public class MainService {
 
     public void removeAll() {
         lruMap.clear();
+    }
+
+    public List<MyRequestEntity> getAllRequests() {
+        return requests;
+    }
+
+    public MyRequestEntity getRequest(String id) {
+        Optional<MyRequestEntity> first = requests.stream().filter(r -> r.getId().equals(id)).findFirst();
+        return first.orElse(null);
     }
 }
