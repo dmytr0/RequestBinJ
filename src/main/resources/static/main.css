@@ -1,7 +1,15 @@
+body {
+    background-color: #44ca492e;
+}
+
 table {
+    border-radius: 20px;
     border-collapse: collapse;
     border: solid 1px #196328;
     max-width: 800px;
+    background-color: #c3f5b3;
+    display: block;
+    padding: 15px;
 }
 
 td, th {
@@ -20,18 +28,22 @@ td.request_id {
     text-align: right;
     color: grey;
 }
+
 td.request_time {
     color: green;
     min-width: 125px;
 }
+
 ul.headers {
     list-style-type: none;
     margin: 10px;
     padding: 0;
 }
+
 span.hvalue {
     color: #9400d3;
 }
+
 td.body_value {
     color: #ff0000;
 }
