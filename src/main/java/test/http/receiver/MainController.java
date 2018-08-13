@@ -33,6 +33,11 @@ public class MainController {
         service.add(method, request, headers, params);
 
         log.info("Ok " + method);
+
+        log.info("responseService " + responseService);
+        log.info("responseService.get(method) " + responseService.get(method));
+        log.info("responseService.get(method).entity() " + responseService.get(method).entity());
+
         return responseService.get(method).entity();
     }
 

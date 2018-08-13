@@ -28,13 +28,15 @@ public class ResponseService {
         responses.remove(method);
     }
 
+
     public MyResponse get(String method) {
         MyResponse resp = responses.get(method);
+
         if(resp == null) {
             resp = responses.get(ALL);
         }
 
-        if (responses ==null) {
+        if (responses == null) {
             resp = new MyResponse("{\"answer\":\"OK\"}");
         }
 
