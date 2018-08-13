@@ -14,32 +14,35 @@ public class ResponseService {
     public static final String POST = "POST";
     public static final String PUT = "PUT";
     public static final String DELETE = "DELETE";
-    private Map<String, MyResponse> responses = new HashMap<>();
+    public static final MyResponse DEFAULT_RESP = new MyResponse("{\"answer\":\"OK\"}");
+    private Map<String, MyResponse> responses;
 
-    public void addResponse(String method, MyResponse response){
+    public ResponseService() {
+        responses = new HashMap<>();
+        responses.put(ALL, DEFAULT_RESP);
+    }
+
+    public void addResponse(String method, MyResponse response) {
         responses.put(method, response);
     }
 
-    public void addResponse(MyResponse response){
+    public void addResponse(MyResponse response) {
         responses.put(ALL, response);
     }
 
-    public void deleteResponse(String method){
+    public void deleteResponse(String method) {
         responses.remove(method);
     }
 
 
     public MyResponse get(String method) {
         MyResponse resp = responses.get(method);
-
-        if(resp == null) {
+        if (resp == null) {
             resp = responses.get(ALL);
         }
-
-        if (responses == null) {
-            resp = new MyResponse("{\"answer\":\"OK\"}");
+        if (resp == null) {
+            resp = DEFAULT_RESP;
         }
-
         return resp;
     }
 

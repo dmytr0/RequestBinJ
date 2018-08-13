@@ -9,6 +9,7 @@ import test.domain.MyRequestEntity;
 import test.service.MainService;
 import test.service.ResponseService;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +34,6 @@ public class MainController {
         service.add(method, request, headers, params);
 
         log.info("Ok " + method);
-
-        log.info("responseService " + responseService);
-        log.info("responseService.get(method) " + responseService.get(method));
-        log.info("responseService.get(method).entity() " + responseService.get(method).entity());
-
         return responseService.get(method).entity();
     }
 
@@ -99,5 +95,12 @@ public class MainController {
     public String removeAll() {
         service.removeAll();
         return "OK";
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public String error(Exception e) {
+        log.error(e.getMessage(), e);
+        return Arrays.toString(e.getStackTrace());
     }
 }
