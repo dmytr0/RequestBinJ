@@ -56,3 +56,17 @@ span.hname {
     color: brown;
     margin-right: 1em;
 }
+
+.request:nth-child(odd) table {
+    float: right;
+    overflow:  hidden;
+    clear: both;
+    margin-bottom: 20px;
+}
+
+.request:nth-child(even) table {
+    float: left;
+    overflow:  hidden;
+    clear: both;
+    margin-bottom: 20px;
+}
