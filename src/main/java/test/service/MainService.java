@@ -1,6 +1,7 @@
 package test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import test.domain.MyRequestEntity;
 import test.repository.RequestsRepository;
@@ -30,7 +31,7 @@ public class MainService {
     }
 
     public List<MyRequestEntity> getAllRequests() {
-        return repository.findAll();
+        return repository.findAll(new Sort(Sort.Direction.DESC, "time"));
     }
 
     public MyRequestEntity getRequest(String id) {
