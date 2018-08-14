@@ -17,9 +17,9 @@ public class MainService {
     private RequestsRepository repository;
 
     public void add(String method, String body, Map<String, String> headers, Map<String, String> params) {
+        removeOld();
         MyRequestEntity request = new MyRequestEntity(method, body, headers, params);
         repository.save(request);
-        removeOld();
     }
 
     private void removeOld() {
