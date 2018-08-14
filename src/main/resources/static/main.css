@@ -58,15 +58,23 @@ span.hname {
 }
 
 .request:nth-child(odd) table {
-    float: right;
+    float: left;
     overflow:  hidden;
     clear: both;
     margin-bottom: 20px;
 }
 
 .request:nth-child(even) table {
-    float: left;
+    float: right;
     overflow:  hidden;
     clear: both;
     margin-bottom: 20px;
+}
+div#react {
+    overflow: hidden;
+}
+input[type="submit"] {
+    width: 50%;
+    height: 50px;
+    margin-left: 25%;
 }
