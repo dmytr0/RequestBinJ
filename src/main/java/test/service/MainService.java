@@ -2,6 +2,7 @@ package test.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import test.domain.MyRequestEntity;
 import test.repository.RequestsRepository;
@@ -16,6 +17,7 @@ public class MainService {
     @Autowired
     private RequestsRepository repository;
 
+    @Async
     public void add(String method, String body, Map<String, String> headers, Map<String, String> params) {
         removeOld();
         MyRequestEntity request = new MyRequestEntity(method, body, headers, params);

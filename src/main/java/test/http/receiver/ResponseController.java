@@ -25,7 +25,7 @@ public class ResponseController {
 
     @PostMapping("/add/{method}")
     @ResponseStatus(HttpStatus.OK)
-    public void add(MyResponse response, @PathVariable("method") String method) {
+    public void add(@RequestBody MyResponse response, @PathVariable("method") String method) {
         log.info("adding " + response + "\t\tmethod " + method);
         responseService.addResponse(method, response);
     }

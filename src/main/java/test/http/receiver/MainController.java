@@ -32,15 +32,16 @@ public class MainController {
                                   @RequestHeader(required = false) Map<String, String> headers,
                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        String method = ResponseService.GET;
+        service.add(method, request, headers, params);
+
+        log.info("Ok " + method);
+
         String delay = params.get("delay");
         if(delay != null && !delay.isEmpty()) {
             log.info("request with delay " + delay);
             Thread.sleep(Long.valueOf(delay));
         }
-        String method = ResponseService.GET;
-        service.add(method, request, headers, params);
-
-        log.info("Ok " + method);
         return responseService.get(method).entity();
     }
 
