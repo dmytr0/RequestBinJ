@@ -1,15 +1,21 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html>
 <head lang="en">
     <meta charset="UTF-8"/>
     <title>ReactJS + Spring Data REST</title>
-    <link rel="stylesheet" href="/main.css" />
+    <link rel="stylesheet" href="/main.css"/>
 </head>
 <body>
 
-    <div id="react"></div>
+<div id="react"></div>
 
-    <script src="built/bundle.js"></script>
+<div id="reset-button">
+    <form action="/reset" method="get">
+        <input type="submit" value="RESET">
+    </form>
+</div>
+
+<script src="built/bundle.js"></script>
 
 </body>
 </html>

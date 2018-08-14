@@ -9,6 +9,8 @@ import test.domain.MyRequestEntity;
 import test.service.MainService;
 import test.service.ResponseService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +32,11 @@ public class MainController {
                                   @RequestHeader(required = false) Map<String, String> headers,
                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        String delay = params.get("delay");
+        if(delay != null && !delay.isEmpty()) {
+            log.info("request with delay " + delay);
+            Thread.sleep(Long.valueOf(delay));
+        }
         String method = ResponseService.GET;
         service.add(method, request, headers, params);
 
@@ -43,6 +50,10 @@ public class MainController {
                                    @RequestHeader(required = false) Map<String, String> headers,
                                    @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        String delay = params.get("delay");
+        if(delay != null && !delay.isEmpty()) {
+            Thread.sleep(Long.valueOf(delay));
+        }
         String method = ResponseService.POST;
         service.add(method, request, headers, params);
 
@@ -57,6 +68,10 @@ public class MainController {
                                   @RequestHeader(required = false) Map<String, String> headers,
                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        String delay = params.get("delay");
+        if(delay != null && !delay.isEmpty()) {
+            Thread.sleep(Long.valueOf(delay));
+        }
         String method = ResponseService.PUT;
         service.add(method, request, headers, params);
 
@@ -71,6 +86,10 @@ public class MainController {
                                      @RequestHeader(required = false) Map<String, String> headers,
                                      @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        String delay = params.get("delay");
+        if(delay != null && !delay.isEmpty()) {
+            Thread.sleep(Long.valueOf(delay));
+        }
         String method = ResponseService.DELETE;
         service.add(method, request, headers, params);
         log.info("Ok " + method);
@@ -91,12 +110,10 @@ public class MainController {
     }
 
     @GetMapping(value = "/reset")
-    @ResponseStatus(HttpStatus.OK)
-    public String removeAll() {
+    public void removeAll(HttpServletResponse response) throws IOException {
         service.removeAll();
-        return "OK";
+        response.sendRedirect("/");
     }
-
 
     @ExceptionHandler(Exception.class)
     public String error(Exception e) {
