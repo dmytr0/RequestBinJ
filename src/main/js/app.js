@@ -55,8 +55,8 @@ class MyRequestEntity extends React.Component {
                         <td className="request_id">{this.props.request.id}</td>
                     </tr>
                     <tr>
+                        <td className="name time_name">Time</td>
                         <td className="request_time">{this.props.request.stringTime}</td>
-                        <td></td>
                     </tr>
                     <tr>
                         <td className="name body_name">Body</td>
