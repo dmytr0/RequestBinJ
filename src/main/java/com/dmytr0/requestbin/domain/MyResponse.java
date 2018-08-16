@@ -1,4 +1,4 @@
-package test.domain;
+package com.dmytr0.requestbin.domain;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package test.config;
+package com.dmytr0.requestbin.config;
 
 
 import org.springframework.context.annotation.ComponentScan;
@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Configuration
 @PropertySource(value = {"classpath:application.properties", "classpath:build.properties"}, encoding = "UTF-8")
-@ComponentScan("test")
+@ComponentScan("com.dmytr0.requestbin")
 @EnableAsync
 @EnableScheduling
 public class AppConfig {

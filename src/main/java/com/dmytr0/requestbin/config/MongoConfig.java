@@ -1,4 +1,4 @@
-package test.config;
+package com.dmytr0.requestbin.config;
 
 import de.flapdoodle.embed.mongo.Command;
 import de.flapdoodle.embed.mongo.config.*;
@@ -15,7 +15,7 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 import java.io.IOException;
 import java.nio.file.Paths;
 
-@EnableMongoRepositories(basePackages = "test.**.repository")
+@EnableMongoRepositories(basePackages = "com.dmytr0.requestbin.**.repository")
 @Configuration
 public class MongoConfig {
     private static final String MONGO_DB_URL = "localhost";

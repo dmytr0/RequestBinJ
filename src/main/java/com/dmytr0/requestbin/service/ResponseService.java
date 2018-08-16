@@ -1,15 +1,17 @@
-package test.service;
+package com.dmytr0.requestbin.service;
 
+import com.dmytr0.requestbin.domain.MyResponse;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
-import test.domain.MyResponse;
 
 import java.util.HashMap;
 import java.util.Map;
 
+@Log4j2
 @Service
 public class ResponseService {
 
-    public static final String ALL = "all";
+    public static final String ALL = "ALL";
     public static final String GET = "GET";
     public static final String POST = "POST";
     public static final String PUT = "PUT";
@@ -26,14 +28,9 @@ public class ResponseService {
         responses.put(method, response);
     }
 
-    public void addResponse(MyResponse response) {
-        responses.put(ALL, response);
-    }
-
     public void deleteResponse(String method) {
         responses.remove(method);
     }
-
 
     public MyResponse get(String method) {
         MyResponse resp = responses.get(method);
