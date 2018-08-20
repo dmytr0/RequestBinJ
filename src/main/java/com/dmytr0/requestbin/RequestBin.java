@@ -1,4 +1,4 @@
-package test;
+package com.dmytr0.requestbin;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,12 +10,12 @@ import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
 @SpringBootApplication
-public class Receiver {
+public class RequestBin {
 
     private Logger logger = LogManager.getLogger(getClass());
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder(Receiver.class)
+        new SpringApplicationBuilder(RequestBin.class)
                 .listeners(new ApplicationPidFileWriter("app.pid"))
                 .run(args);
     }

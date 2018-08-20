@@ -1,13 +1,13 @@
-package test.http.receiver;
+package com.dmytr0.requestbin.http.receiver;
 
+import com.dmytr0.requestbin.domain.MyRequestEntity;
+import com.dmytr0.requestbin.service.ResponseService;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import test.domain.MyRequestEntity;
-import test.service.MainService;
-import test.service.ResponseService;
+import com.dmytr0.requestbin.service.MainService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
