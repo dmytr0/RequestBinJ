@@ -29,6 +29,6 @@ log
 hs_err_pid*
 
 *.pid
-mongo
-node_modules
-src/main/resources/static/build
+mongo/**
+node_modules/**
+src/main/resources/static/build/**
