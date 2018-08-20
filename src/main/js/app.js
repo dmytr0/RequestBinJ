@@ -14,10 +14,14 @@ class App extends React.Component {
         this.state = {listrequests: []};
     }
 
+    componentWillUnmount() {
+        clearInterval(this.interval);
+    }
+
     componentDidMount() {
-        client({method: 'GET', path: '/api/listrequests'}).done(response => {
+        this.interval = setInterval(() => client({method: 'GET', path: '/api/listrequests'}).done(response => {
             this.setState({listrequests: response.entity});
-        });
+        }), 2000);
     }
 
     render() {
@@ -64,7 +68,8 @@ class MyRequestEntity extends React.Component {
                     </tr>
                     <tr>
                         <td className="name header_name">Headers</td>
-                        <td className="header_values"><Headers  clazz="headers"  headers={this.props.request.headers}/></td>
+                        <td className="header_values"><Headers clazz="headers" headers={this.props.request.headers}/>
+                        </td>
                     </tr>
                     <tr>
                         <td className="name params_name">Params</td>
@@ -103,9 +108,12 @@ class Header extends React.Component {
     }
 }
 
+
 ReactDOM.render(
     <App/>,
     document.getElementById('react')
-)
+);
+
+
 // end::render[]
 
