@@ -1,0 +1,7 @@
+{
+  "name": "RequestBinJ",
+  "description": "HTTP request debug",
+  "repository": "https://github.com/dmytr0/RequestBinJ.git",
+  "logo": "https://lh3.googleusercontent.com/YibhX0Dyke4Y4SP0I-i1oC6BvuX5nXYCoBObmyFE87ZoJUTrwFON2lTjCfGnV0tzHMC4EqyArh2enBCLbs-F=w1859-h956",
+  "keywords": ["requests", "HTTP", "webhook"]
+}
