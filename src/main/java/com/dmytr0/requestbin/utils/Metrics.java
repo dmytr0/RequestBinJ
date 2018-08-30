@@ -96,25 +96,6 @@ public class Metrics {
         return (sum * 10F / results.size()) / 10;
     }
 
-//    @NotNull
-//    private String getStringResult(StatsMetric statsMetric) {
-//        Map<String, Integer> results = statsMetric.getMapResult();
-//        if (results == null || results.isEmpty()) {
-//            return "Data is absent";
-//        }
-//
-//        long allCount = 0;
-//        StringBuilder sb = new StringBuilder(name);
-//        for (Map.Entry<String, Integer> entry : results.entrySet()) {
-//            allCount += entry.getValue();
-//            sb.append("<br/>").append(entry.getKey()).append(": ").append(entry.getValue());
-//        }
-//
-//        long avrCount = allCount / results.size();
-//        sb.append("<br/><br/>").append("AVR: ").append(avrCount);
-//        return sb.toString();
-//    }
-
     private int getCountByPattern(String pat) {
         Set<String> keys = jedis.keys(name + pat + "*");
 
