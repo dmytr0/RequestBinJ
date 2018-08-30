@@ -16,6 +16,12 @@ GET, POST, PUT, DELETE
   
 **GET,POST,PUT,DELETE**  
 **/test** - *endpoint for test request with headers, params, body*  
+*additional parameters:*
+```
+    delay       | Long   |   Imitation of delay in millis
+    randomdelay | Long   |   Imitation of random delay in millis from 1 to N
+    
+```  
   
 **GET**   
 **/metrics** - *metrics endpoint*  
@@ -39,7 +45,7 @@ GET, POST, PUT, DELETE
 	},
 	"avr": 2.6666665
   }
-```
+```  
 
 **GET**  
 **/reset** - *endpoint clear all request and metrics*  
