@@ -1,6 +1,8 @@
 # RequestBinJ
 Debug HTTP requests
 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/dmytr0/RequestBinJ)
+
 ## Common
 Supported methods: 
 ```
