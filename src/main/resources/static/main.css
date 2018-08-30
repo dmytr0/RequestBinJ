@@ -46,6 +46,7 @@ span.hvalue {
 
 td.body_value {
     color: #ff0000;
+    word-break: break-word;
 }
 
 .name {
