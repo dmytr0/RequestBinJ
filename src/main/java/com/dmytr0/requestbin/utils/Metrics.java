@@ -36,13 +36,8 @@ public class Metrics {
     public void add(int count) {
         try {
             LocalDateTime now = LocalDateTime.now();
-            String pattern = name + now.format(redisDtf) + System.nanoTime();
-//            String result = jedis.get(pattern);
-//            log.debug("current value jedis " + pattern + " - " + result);
-//            long current = result == null ? 0L : Long.valueOf(result);
-//            long newValue = current + count;
-//            jedis.set(pattern, String.valueOf(newValue));
-            jedis.set(pattern, String.valueOf(count));
+            String pattern = name + now.format(redisDtf);
+            jedis.incrBy(pattern, count);
         } catch (Exception e) {
             log.warn("Error count request: " + e.getMessage(), e);
         }
