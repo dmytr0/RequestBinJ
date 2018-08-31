@@ -2,6 +2,7 @@ package com.dmytr0.requestbin.utils;
 
 import com.dmytr0.requestbin.domain.StatsMetric;
 import com.dmytr0.requestbin.enums.RateType;
+import lombok.extern.log4j.Log4j2;
 import redis.clients.jedis.Jedis;
 
 import java.time.LocalDateTime;
@@ -13,10 +14,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.dmytr0.requestbin.enums.RateType.PER_SECOND;
 
+@Log4j2
 public class Metrics {
 
-    private static final String REDIS_KEY_PATTERN = "yyyyMMddHHmmss";
-    private static final DateTimeFormatter dtf = DateTimeFormatter.ofPattern(REDIS_KEY_PATTERN);
+    private static final String REDIS_KEY_PATTERN = "yyyyMMddHHmmssSSS";
+    private static final DateTimeFormatter redisDtf = DateTimeFormatter.ofPattern(REDIS_KEY_PATTERN);
+
 
     private Jedis jedis;
     private String name;
@@ -31,13 +34,21 @@ public class Metrics {
     }
 
     public void add(int count) {
-        LocalDateTime now = LocalDateTime.now();
-        String pattern = name + now.format(dtf);
-        long current = jedis.get(pattern) == null ? 0L : Long.valueOf(jedis.get(pattern));
-        long newValue = current + count;
-        jedis.set(pattern, String.valueOf(newValue));
+        try {
+            LocalDateTime now = LocalDateTime.now();
+            String pattern = name + now.format(redisDtf) + System.nanoTime();
+//            String result = jedis.get(pattern);
+//            log.debug("current value jedis " + pattern + " - " + result);
+//            long current = result == null ? 0L : Long.valueOf(result);
+//            long newValue = current + count;
+//            jedis.set(pattern, String.valueOf(newValue));
+            jedis.set(pattern, String.valueOf(count));
+        } catch (Exception e) {
+            log.warn("Error count request: " + e.getMessage(), e);
+        }
     }
 
+    //Default
     public StatsMetric getRate() {
         return getRate(LocalDateTime.now().minusHours(1), LocalDateTime.now(), PER_SECOND, true);
     }
@@ -70,6 +81,8 @@ public class Metrics {
         LocalDateTime finishTime = LocalDateTime.now();
         boolean ignoreZeroValue = true;
         RateType type = PER_SECOND;
+
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern(PER_SECOND.getPattern());
 
         if (start != null && !start.isEmpty()) {
             startTime = LocalDateTime.parse(start, dtf);
