@@ -2,22 +2,23 @@ package com.dmytr0.requestbin.http.receiver;
 
 import com.dmytr0.requestbin.domain.MyRequestEntity;
 import com.dmytr0.requestbin.domain.StatsMetric;
+import com.dmytr0.requestbin.enums.HttpMethod;
 import com.dmytr0.requestbin.service.MainService;
+import com.dmytr0.requestbin.service.MetricsService;
 import com.dmytr0.requestbin.service.ResponseService;
-import com.dmytr0.requestbin.utils.Metrics;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+
+import static com.dmytr0.requestbin.enums.HttpMethod.*;
 
 @RestController
 @Log4j2
@@ -28,25 +29,11 @@ public class MainController {
 
     @Autowired
     private MainService service;
-
     @Autowired
     private ResponseService responseService;
-
-    private Metrics metrics;
-    private Metrics getMetrics;
-    private Metrics postMetrics;
-    private Metrics putMetrics;
-    private Metrics deleteMetrics;
-
-
     @Autowired
-    public MainController(Jedis jedis) {
-        metrics = new Metrics(jedis, "COMMON_METRIC");
-        getMetrics = new Metrics(jedis, "GET_METRIC");
-        postMetrics = new Metrics(jedis, "POST_METRIC");
-        putMetrics = new Metrics(jedis, "PUT_METRIC");
-        deleteMetrics = new Metrics(jedis, "DELETE_METRIC");
-    }
+    private MetricsService metricsService;
+
 
     @GetMapping(value = "/test")
     @ResponseStatus(HttpStatus.OK)
@@ -54,15 +41,7 @@ public class MainController {
                                   @RequestHeader(required = false) Map<String, String> headers,
                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
-        metrics.add();
-        getMetrics.add();
-        String method = ResponseService.GET;
-        service.add(method, request, headers, params);
-
-        log.info("Ok " + method);
-
-        processDelay(params);
-        return responseService.get(method).entity();
+        return processRequest(request, headers, params, GET);
     }
 
     @PostMapping(value = "/test")
@@ -71,14 +50,7 @@ public class MainController {
                                    @RequestHeader(required = false) Map<String, String> headers,
                                    @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
-        metrics.add();
-        postMetrics.add();
-        String method = ResponseService.POST;
-        service.add(method, request, headers, params);
-
-        log.info("Ok " + method);
-        processDelay(params);
-        return responseService.get(method).entity();
+        return processRequest(request, headers, params, POST);
     }
 
 
@@ -88,14 +60,7 @@ public class MainController {
                                   @RequestHeader(required = false) Map<String, String> headers,
                                   @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
-        metrics.add();
-        putMetrics.add();
-        String method = ResponseService.PUT;
-        service.add(method, request, headers, params);
-
-        log.info("Ok " + method);
-        processDelay(params);
-        return responseService.get(method).entity();
+        return processRequest(request, headers, params, PUT);
     }
 
 
@@ -105,10 +70,15 @@ public class MainController {
                                      @RequestHeader(required = false) Map<String, String> headers,
                                      @RequestParam(required = false) Map<String, String> params) throws InterruptedException {
 
+        return processRequest(request, headers, params, DELETE);
+    }
 
-        metrics.add();
-        deleteMetrics.add();
-        String method = ResponseService.DELETE;
+    private ResponseEntity processRequest(String request,
+                                          Map<String, String> headers,
+                                          Map<String, String> params,
+                                          HttpMethod method) throws InterruptedException {
+
+
         service.add(method, request, headers, params);
         log.info("Ok " + method);
         processDelay(params);
@@ -133,7 +103,7 @@ public class MainController {
     @GetMapping(value = "/reset")
     public void removeAll(HttpServletResponse response) throws IOException {
         service.removeAll();
-        metrics.clear();
+
         response.sendRedirect("/");
     }
 
@@ -143,11 +113,8 @@ public class MainController {
                                         @RequestParam(required = false, value = "ignoreZero") String ignoreZero,
                                         @RequestParam(required = false, value = "type") String type) {
 
-        return Arrays.asList(metrics.handleRateRequest(start, finish, ignoreZero, type),
-                getMetrics.handleRateRequest(start, finish, ignoreZero, type),
-                postMetrics.handleRateRequest(start, finish, ignoreZero, type),
-                putMetrics.handleRateRequest(start, finish, ignoreZero, type),
-                deleteMetrics.handleRateRequest(start, finish, ignoreZero, type));
+        log.info(String.format("Get metric request start: %s\tfinish: %s\tignoreZero:%s\ttype:%s", start, finish, ignoreZero, type));
+        return metricsService.handleRateRequest(start, finish, ignoreZero, type);
     }
 
     private void processDelay(Map<String, String> params) throws InterruptedException {

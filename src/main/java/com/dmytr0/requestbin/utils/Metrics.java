@@ -26,7 +26,7 @@ public class Metrics {
 
     public Metrics(Jedis jedis, String name) {
         this.jedis = jedis;
-        this.name = name;
+        this.name = name + "_METRIC";
     }
 
     public void add() {
@@ -102,6 +102,15 @@ public class Metrics {
         }
         int sum = results.values().stream().mapToInt(Integer::intValue).sum();
         return (sum * 10F / results.size()) / 10;
+    }
+
+    public Set<String> getAllKeys() {
+        return jedis.keys(name + "*");
+    }
+
+    public void removeKeys(Set<String> keys) {
+        String[] keysForDel = keys.toArray(new String[0]);
+        jedis.del(keysForDel);
     }
 
     private int getCountByPattern(String pat) {

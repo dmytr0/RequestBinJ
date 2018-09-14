@@ -1,12 +1,11 @@
 'use strict';
 
-// tag::vars[]
 const React = require('react');
 const ReactDOM = require('react-dom');
 const client = require('./client');
-// end::vars[]
+var i = 0;
 
-// tag::app[]
+
 class App extends React.Component {
 
     constructor(props) {
@@ -20,8 +19,9 @@ class App extends React.Component {
 
     componentDidMount() {
         this.interval = setInterval(() => client({method: 'GET', path: '/api/listrequests'}).done(response => {
+            i = response.entity.length;
             this.setState({listrequests: response.entity});
-        }), 2000);
+        }), 1000);
     }
 
     render() {
@@ -31,9 +31,6 @@ class App extends React.Component {
     }
 }
 
-// end::app[]
-
-// tag::request-list[]
 class MyRequestEntityList extends React.Component {
     render() {
         var listrequests = this.props.listrequests.map(request =>
@@ -41,7 +38,10 @@ class MyRequestEntityList extends React.Component {
         );
         return (
             <div>
-                {listrequests}
+                <div className="counter"><a>Requests count: {i}</a></div>
+                <div>
+                    {listrequests}
+                </div>
             </div>
         )
     }
@@ -103,7 +103,8 @@ class Header extends React.Component {
     render() {
         var clazz = this.props.clazz;
         return (
-            <li><span className={"hname " + clazz}>{this.props.hname}</span>: <span className="hvalue">{this.props.value}</span></li>
+            <li><span className={"hname " + clazz}>{this.props.hname}</span>: <span
+                className="hvalue">{this.props.value}</span></li>
         )
     }
 }
@@ -115,5 +116,4 @@ ReactDOM.render(
 );
 
 
-// end::render[]
 

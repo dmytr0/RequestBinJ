@@ -1,5 +1,6 @@
 package com.dmytr0.requestbin.domain;
 
+import com.dmytr0.requestbin.enums.HttpMethod;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,14 +20,14 @@ public class MyRequestEntity {
 
     @Id
     private String _id;
-    private String method;
+    private HttpMethod method;
     private String body;
     private Map<String, String> headers;
     private Map<String, String> params;
     private LocalDateTime time;
     private String stringTime;
 
-    public MyRequestEntity(String method, String body, Map<String, String> headers, Map<String, String> params) {
+    public MyRequestEntity(HttpMethod method, String body, Map<String, String> headers, Map<String, String> params) {
         this._id = UUID.randomUUID().toString();
         this.method = method;
         this.body = body;
