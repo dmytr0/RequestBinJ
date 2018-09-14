@@ -61,6 +61,7 @@
 	var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(37);
 	var client = __webpack_require__(184);
+	var i = 0;
 	// end::vars[]
 	
 	// tag::app[]
@@ -89,6 +90,7 @@
 	
 	            this.interval = setInterval(function () {
 	                return client({ method: 'GET', path: '/api/listrequests' }).done(function (response) {
+	                    i = response.entity.length;
 	                    _this2.setState({ listrequests: response.entity });
 	                });
 	            }, 2000);
@@ -126,7 +128,21 @@
 	            return React.createElement(
 	                'div',
 	                null,
-	                listrequests
+	                React.createElement(
+	                    'div',
+	                    { className: 'counter' },
+	                    React.createElement(
+	                        'a',
+	                        null,
+	                        'Requests count: ',
+	                        i
+	                    )
+	                ),
+	                React.createElement(
+	                    'div',
+	                    null,
+	                    listrequests
+	                )
 	            );
 	        }
 	    }]);
