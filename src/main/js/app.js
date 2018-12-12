@@ -18,6 +18,10 @@ class App extends React.Component {
     }
 
     componentDidMount() {
+        client({method: 'GET', path: '/api/listrequests'}).done(response => {
+            i = response.entity.length;
+            this.setState({listrequests: response.entity});
+        });
         this.interval = setInterval(() => client({method: 'GET', path: '/api/listrequests'}).done(response => {
             i = response.entity.length;
             this.setState({listrequests: response.entity});
@@ -50,6 +54,10 @@ class MyRequestEntityList extends React.Component {
 
 class MyRequestEntity extends React.Component {
     render() {
+
+        let formattedBody = getPrettyBody(this.props.request.body, this.props.request.headers);
+
+
         return (
             <div className="request">
                 <table>
@@ -64,7 +72,9 @@ class MyRequestEntity extends React.Component {
                     </tr>
                     <tr>
                         <td className="name body_name ">Body</td>
-                        <td className="body_value">{this.props.request.body}</td>
+                        <td className="body_value">
+                            <pre>{formattedBody}</pre>
+                        </td>
                     </tr>
                     <tr>
                         <td className="name header_name">Headers</td>
@@ -83,6 +93,57 @@ class MyRequestEntity extends React.Component {
         )
     }
 }
+
+function getPrettyBody(body, headers) {
+    let formattedBody = body;
+    if (headers['content-type'] === 'application/json') {
+        try {
+            formattedBody = JSON.stringify(JSON.parse(formattedBody), null, 2);
+        } catch (ignore) {
+        }
+    }
+
+    if (headers['content-type'] === 'application/xml' || headers['content-type'] === 'text/xml') {
+        try {
+            formattedBody = formatXml(formattedBody);
+        } catch (ignore) {
+        }
+    }
+
+    return formattedBody;
+}
+
+function formatXml(xml) {
+    var formatted = '';
+    var reg = /(>)(<)(\/*)/g;
+    xml = xml.replace(reg, '$1\r\n$2$3');
+    var pad = 0;
+    jQuery.each(xml.split('\r\n'), function(index, node) {
+        var indent = 0;
+        if (node.match( /.+<\/\w[^>]*>$/ )) {
+            indent = 0;
+        } else if (node.match( /^<\/\w/ )) {
+            if (pad != 0) {
+                pad -= 1;
+            }
+        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+            indent = 1;
+        } else {
+            indent = 0;
+        }
+
+        var padding = '';
+        for (var i = 0; i < pad; i++) {
+            padding += ' ';
+        }
+
+        formatted += padding + node + '\r\n';
+        pad += indent;
+    });
+
+    return formatted;
+}
+
 
 class Headers extends React.Component {
     render() {

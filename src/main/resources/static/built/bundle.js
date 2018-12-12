@@ -83,6 +83,10 @@
 	        value: function componentDidMount() {
 	            var _this2 = this;
 	
+	            client({ method: 'GET', path: '/api/listrequests' }).done(function (response) {
+	                i = response.entity.length;
+	                _this2.setState({ listrequests: response.entity });
+	            });
 	            this.interval = setInterval(function () {
 	                return client({ method: 'GET', path: '/api/listrequests' }).done(function (response) {
 	                    i = response.entity.length;
@@ -152,6 +156,9 @@
 	    _createClass(MyRequestEntity, [{
 	        key: 'render',
 	        value: function render() {
+	
+	            var formattedBody = getPrettyBody(this.props.request.body, this.props.request.headers);
+	
 	            return React.createElement(
 	                'div',
 	                { className: 'request' },
@@ -200,7 +207,11 @@
 	                            React.createElement(
 	                                'td',
 	                                { className: 'body_value' },
-	                                this.props.request.body
+	                                React.createElement(
+	                                    'pre',
+	                                    null,
+	                                    formattedBody
+	                                )
 	                            )
 	                        ),
 	                        React.createElement(
@@ -241,6 +252,55 @@
 	
 	    return MyRequestEntity;
 	}(React.Component);
+	
+	function getPrettyBody(body, headers) {
+	    var formattedBody = body;
+	    if (headers['content-type'] === 'application/json') {
+	        try {
+	            formattedBody = JSON.stringify(JSON.parse(formattedBody), null, 2);
+	        } catch (ignore) {}
+	    }
+	
+	    if (headers['content-type'] === 'application/xml' || headers['content-type'] === 'text/xml') {
+	        try {
+	            //TODO
+	            formattedBody = formatXml(formattedBody);
+	        } catch (ignore) {}
+	    }
+	
+	    return formattedBody;
+	}
+	
+	function formatXml(xml) {
+	    var formatted = '';
+	    var reg = /(>)(<)(\/*)/g;
+	    xml = xml.replace(reg, '$1\r\n$2$3');
+	    var pad = 0;
+	    jQuery.each(xml.split('\r\n'), function (index, node) {
+	        var indent = 0;
+	        if (node.match(/.+<\/\w[^>]*>$/)) {
+	            indent = 0;
+	        } else if (node.match(/^<\/\w/)) {
+	            if (pad != 0) {
+	                pad -= 1;
+	            }
+	        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+	            indent = 1;
+	        } else {
+	            indent = 0;
+	        }
+	
+	        var padding = '';
+	        for (var i = 0; i < pad; i++) {
+	            padding += ' ';
+	        }
+	
+	        formatted += padding + node + '\r\n';
+	        pad += indent;
+	    });
+	
+	    return formatted;
+	}
 	
 	var Headers = function (_React$Component4) {
 	    _inherits(Headers, _React$Component4);
