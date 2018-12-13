@@ -62,14 +62,14 @@ span.hname {
     margin-right: 1em;
 }
 
-.request:nth-child(odd) table {
+.request:nth-child(odd) table.request-table {
     float: left;
     overflow: hidden;
     clear: both;
     margin-bottom: 20px;
 }
 
-.request:nth-child(even) table {
+.request:nth-child(even) table.request-table {
     float: right;
     overflow: hidden;
     clear: both;
