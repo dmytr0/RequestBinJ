@@ -164,7 +164,7 @@
 	                { className: 'request' },
 	                React.createElement(
 	                    'table',
-	                    null,
+	                    { className: 'request-table' },
 	                    React.createElement(
 	                        'tbody',
 	                        null,
@@ -263,7 +263,6 @@
 	
 	    if (headers['content-type'] === 'application/xml' || headers['content-type'] === 'text/xml') {
 	        try {
-	            //TODO
 	            formattedBody = formatXml(formattedBody);
 	        } catch (ignore) {}
 	    }
@@ -324,9 +323,13 @@
 	            });
 	
 	            return React.createElement(
-	                'ul',
+	                'table',
 	                { className: 'headers' },
-	                headers
+	                React.createElement(
+	                    'tbody',
+	                    null,
+	                    headers
+	                )
 	            );
 	        }
 	    }]);
@@ -348,19 +351,25 @@
 	        value: function render() {
 	            var clazz = this.props.clazz;
 	            return React.createElement(
-	                'li',
+	                'tr',
 	                null,
 	                React.createElement(
-	                    'span',
-	                    { className: "hname " + clazz },
-	                    this.props.hname
+	                    'td',
+	                    null,
+	                    React.createElement(
+	                        'span',
+	                        { className: "hname " + clazz },
+	                        this.props.hname
+	                    )
 	                ),
-	                ': ',
 	                React.createElement(
-	                    'span',
-	                    {
-	                        className: 'hvalue' },
-	                    this.props.value
+	                    'td',
+	                    null,
+	                    React.createElement(
+	                        'span',
+	                        { className: 'hvalue' },
+	                        this.props.value
+	                    )
 	                )
 	            );
 	        }

@@ -2,7 +2,7 @@ body {
     background-color: #44ca492e;
 }
 
-table {
+table.request-table {
     border-radius: 20px;
     border-collapse: collapse;
     border: solid 1px #196328;
@@ -12,41 +12,45 @@ table {
     padding: 15px;
 }
 
-td, th {
+table.request-table > tbody > tr > td {
     border: 1px dotted #999;
     text-align: left;
     padding: 5px;
 }
 
-td.method {
+table.request-table > tbody > tr > td.method {
     color: red;
     font-size: 20px;
     font-weight: bold;
 }
 
-td.request_id {
+table.request-table > tbody > tr > td.request_id {
     text-align: right;
     color: grey;
 }
 
-td.request_time {
+table.request-table > tbody > tr > td.request_time {
     color: green;
     min-width: 125px;
 }
 
-ul.headers {
-    list-style-type: none;
-    margin: 10px;
-    padding: 0;
+table.request-table > tbody > tr > td.body_value {
+    color: #ff0000;
+    word-break: break-word;
+}
+
+
+table.headers {
+    max-width: 600px;
+    display: block;
+}
+
+table.headers > tbody > tr > td{
+    border-bottom: dotted 1px #ff00004a;
 }
 
 span.hvalue {
     color: #9400d3;
-}
-
-td.body_value {
-    color: #ff0000;
-    word-break: break-word;
 }
 
 .name {
@@ -60,27 +64,28 @@ span.hname {
 
 .request:nth-child(odd) table {
     float: left;
-    overflow:  hidden;
+    overflow: hidden;
     clear: both;
     margin-bottom: 20px;
 }
 
 .request:nth-child(even) table {
     float: right;
-    overflow:  hidden;
+    overflow: hidden;
     clear: both;
     margin-bottom: 20px;
 }
+
 div#react {
     overflow: hidden;
 }
+
 input[type="submit"] {
     width: 100%;
     height: 20px;
 }
 
-#reset-button
-{
+#reset-button {
     width: 600px;
     margin: 0 auto;
     margin-bottom: 15px;

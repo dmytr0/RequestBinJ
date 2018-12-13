@@ -60,7 +60,7 @@ class MyRequestEntity extends React.Component {
 
         return (
             <div className="request">
-                <table>
+                <table className="request-table">
                     <tbody>
                     <tr>
                         <td className="method">{this.props.request.method}</td>
@@ -118,15 +118,15 @@ function formatXml(xml) {
     var reg = /(>)(<)(\/*)/g;
     xml = xml.replace(reg, '$1\r\n$2$3');
     var pad = 0;
-    jQuery.each(xml.split('\r\n'), function(index, node) {
+    jQuery.each(xml.split('\r\n'), function (index, node) {
         var indent = 0;
-        if (node.match( /.+<\/\w[^>]*>$/ )) {
+        if (node.match(/.+<\/\w[^>]*>$/)) {
             indent = 0;
-        } else if (node.match( /^<\/\w/ )) {
+        } else if (node.match(/^<\/\w/)) {
             if (pad != 0) {
                 pad -= 1;
             }
-        } else if (node.match( /^<\w[^>]*[^\/]>.*$/ )) {
+        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
             indent = 1;
         } else {
             indent = 0;
@@ -153,9 +153,11 @@ class Headers extends React.Component {
         );
 
         return (
-            <ul className="headers">
+            <table className="headers">
+                <tbody>
                 {headers}
-            </ul>
+                </tbody>
+            </table>
         )
     }
 }
@@ -164,8 +166,10 @@ class Header extends React.Component {
     render() {
         var clazz = this.props.clazz;
         return (
-            <li><span className={"hname " + clazz}>{this.props.hname}</span>: <span
-                className="hvalue">{this.props.value}</span></li>
+            <tr>
+                <td><span className={"hname " + clazz}>{this.props.hname}</span></td>
+                <td><span className="hvalue">{this.props.value}</span></td>
+            </tr>
         )
     }
 }
