@@ -38,7 +38,11 @@ public class MetricsService {
     }
 
     public void clear() {
-        metricsList.values().forEach(Metrics::clear);
+        try {
+            metricsList.values().forEach(Metrics::clear);
+        } catch (Exception e) {
+            log.error("Metrics could not be cleared: " + e.getMessage(), e);
+        }
     }
 
     public void removeOld(int numberOfResults) {

@@ -45,6 +45,10 @@ public class StoreService {
     }
 
     void removeAll() {
-        repository.deleteAll();
+        try {
+            repository.deleteAll();
+        } catch (Exception e) {
+            log.error("Requests could not be cleared: " + e.getMessage(), e);
+        }
     }
 }
