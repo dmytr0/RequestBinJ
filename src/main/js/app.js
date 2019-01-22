@@ -73,7 +73,7 @@ class MyRequestEntity extends React.Component {
                     <tr>
                         <td className="name body_name ">Body</td>
                         <td className="body_value">
-                            <pre>{formattedBody}</pre>
+                            <pre className="body-area">{formattedBody}</pre>
                         </td>
                     </tr>
                     <tr>

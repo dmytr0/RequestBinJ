@@ -91,6 +91,9 @@ input[type="submit"] {
     margin-bottom: 15px;
 }
 
+.body-area {
+    white-space: pre-wrap;
+}
 
 
 
