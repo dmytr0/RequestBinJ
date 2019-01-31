@@ -95,5 +95,11 @@ input[type="submit"] {
     white-space: pre-wrap;
 }
 
+.counter {
+    margin: 15px;
+    color: #ec2fff;
+    font-weight: bold;
+    font-size: x-large;
+}
 
 
