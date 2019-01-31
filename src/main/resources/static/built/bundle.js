@@ -255,13 +255,13 @@
 	
 	function getPrettyBody(body, headers) {
 	    var formattedBody = body;
-	    if (headers['content-type'].indexOf('application/json') !== -1) {
+	    if (headers['content-type'] !== undefined && headers['content-type'].indexOf('application/json') !== -1) {
 	        try {
 	            formattedBody = JSON.stringify(JSON.parse(formattedBody), null, 2);
 	        } catch (ignore) {}
 	    }
 	
-	    if (headers['content-type'].indexOf('application/xml') !== -1 || headers['content-type'].indexOf('text/xml') !== -1) {
+	    if (headers['content-type'] !== undefined && (headers['content-type'].indexOf('application/xml') !== -1 || headers['content-type'].indexOf('text/xml') !== -1)) {
 	        try {
 	            formattedBody = formatXml(formattedBody);
 	        } catch (ignore) {}
