@@ -10,6 +10,7 @@ table.request-table {
     max-width: 800px;
     display: block;
     padding: 15px;
+    box-shadow: inset 0 0 14px rgb(6, 55, 51);
 
     background: #00ff99; /* Old browsers */
     background: -moz-linear-gradient(-45deg, #00ff99 0%, #bcffe4 44%, #00ff99 100%); /* FF3.6-15 */
@@ -40,10 +41,10 @@ table.request-table > tbody > tr > td.request_time {
     min-width: 125px;
 }
 
-table.request-table > tbody > tr > td.body_value {
-    color: #ff0000;
-    word-break: break-word;
-}
+/*table.request-table > tbody > tr > td.body_value {*/
+    /*color: #7d00b9;*/
+    /*word-break: break-word;*/
+/*}*/
 
 
 table.headers {
@@ -105,7 +106,7 @@ input[type="submit"] {
     margin-bottom: 15px;
 }
 
-.body-area {
+.wrap-class {
     white-space: pre-wrap;
 }
 
@@ -124,4 +125,11 @@ input[type="submit"] {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#0000ff99', endColorstr='#0000ff99',GradientType=0 ); /* IE6-9 */
 }
 
+
+pre {outline: 1px solid #ccc; padding: 5px; margin: 5px; }
+.string { color: #003a00; }
+.number { color: darkorange; }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: red; }
 

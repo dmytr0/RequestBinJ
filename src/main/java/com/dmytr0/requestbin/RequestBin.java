@@ -21,7 +21,7 @@ public class RequestBin {
     }
 
     @PostConstruct
-    public void init() throws InterruptedException {
+    public void init() {
         logger.info("STARTED");
     }
 

@@ -86,11 +86,13 @@
 	            client({ method: 'GET', path: '/api/listrequests' }).done(function (response) {
 	                i = response.entity.length;
 	                _this2.setState({ listrequests: response.entity });
+	                prettyPrintStart();
 	            });
 	            this.interval = setInterval(function () {
 	                return client({ method: 'GET', path: '/api/listrequests' }).done(function (response) {
 	                    i = response.entity.length;
 	                    _this2.setState({ listrequests: response.entity });
+	                    prettyPrintStart();
 	                });
 	            }, 1000);
 	        }
@@ -103,6 +105,15 @@
 	
 	    return App;
 	}(React.Component);
+	
+	function prettyPrintStart() {
+	    try {
+	        PR.prettyPrint();
+	    } catch (e) {
+	        console.log("pretty print error ");
+	        console.log(e);
+	    }
+	}
 	
 	var MyRequestEntityList = function (_React$Component2) {
 	    _inherits(MyRequestEntityList, _React$Component2);
@@ -117,7 +128,7 @@
 	        key: 'render',
 	        value: function render() {
 	            var listrequests = this.props.listrequests.map(function (request) {
-	                return React.createElement(MyRequestEntity, { key: request.id, request: request });
+	                return React.createElement(MyRequestEntity, { key: request._id, request: request });
 	            });
 	            return React.createElement(
 	                'div',
@@ -156,9 +167,7 @@
 	    _createClass(MyRequestEntity, [{
 	        key: 'render',
 	        value: function render() {
-	
 	            var formattedBody = getPrettyBody(this.props.request.body, this.props.request.headers);
-	
 	            return React.createElement(
 	                'div',
 	                { className: 'request' },
@@ -179,7 +188,7 @@
 	                            React.createElement(
 	                                'td',
 	                                { className: 'request_id' },
-	                                this.props.request.id
+	                                this.props.request._id
 	                            )
 	                        ),
 	                        React.createElement(
@@ -207,11 +216,7 @@
 	                            React.createElement(
 	                                'td',
 	                                { className: 'body_value' },
-	                                React.createElement(
-	                                    'pre',
-	                                    { className: 'body-area' },
-	                                    formattedBody
-	                                )
+	                                formattedBody
 	                            )
 	                        ),
 	                        React.createElement(
@@ -243,9 +248,7 @@
 	                            )
 	                        )
 	                    )
-	                ),
-	                React.createElement('br', null),
-	                React.createElement('tr', null)
+	                )
 	            );
 	        }
 	    }]);
@@ -255,51 +258,96 @@
 	
 	function getPrettyBody(body, headers) {
 	    var formattedBody = body;
-	    if (headers['content-type'] !== undefined && headers['content-type'].indexOf('application/json') !== -1) {
-	        try {
-	            formattedBody = JSON.stringify(JSON.parse(formattedBody), null, 2);
-	        } catch (ignore) {}
-	    }
-	
-	    if (headers['content-type'] !== undefined && (headers['content-type'].indexOf('application/xml') !== -1 || headers['content-type'].indexOf('text/xml') !== -1)) {
-	        try {
-	            formattedBody = formatXml(formattedBody);
-	        } catch (ignore) {}
-	    }
-	
-	    return formattedBody;
-	}
-	
-	function formatXml(xml) {
-	    var formatted = '';
-	    var reg = /(>)(<)(\/*)/g;
-	    xml = xml.replace(reg, '$1\r\n$2$3');
-	    var pad = 0;
-	    jQuery.each(xml.split('\r\n'), function (index, node) {
-	        var indent = 0;
-	        if (node.match(/.+<\/\w[^>]*>$/)) {
-	            indent = 0;
-	        } else if (node.match(/^<\/\w/)) {
-	            if (pad != 0) {
-	                pad -= 1;
-	            }
-	        } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
-	            indent = 1;
+	    if (headers['content-type'] !== undefined) {
+	        var contType = headers['content-type'];
+	        if (contType.indexOf('application/json') !== -1) {
+	            try {
+	                formattedBody = formatJson(formattedBody);
+	                var innerHtml = { __html: formattedBody };
+	                return React.createElement('pre', { className: 'wrap-class', dangerouslySetInnerHTML: innerHtml });
+	            } catch (ignore) {}
 	        } else {
-	            indent = 0;
+	            return React.createElement(
+	                'pre',
+	                { className: 'prettyprint wrap-class' },
+	                formattedBody
+	            );
 	        }
 	
-	        var padding = '';
-	        for (var i = 0; i < pad; i++) {
-	            padding += ' ';
-	        }
-	
-	        formatted += padding + node + '\r\n';
-	        pad += indent;
-	    });
-	
-	    return formatted;
+	        // if (contType.indexOf('application/xml') !== -1 || contType.indexOf('text/xml') !== -1) {
+	        //     try {
+	        //         formattedBody = formatXml(formattedBody);
+	        //         return <pre className="prettyprint wrap-class">{formattedBody}</pre>;
+	        //     } catch (ignore) {
+	        //     }
+	        // }
+	    } else {
+	        return React.createElement(
+	            'pre',
+	            { className: 'prettyprint wrap-class' },
+	            formattedBody
+	        );
+	    }
 	}
+	
+	function formatJson(json) {
+	    var jObj = JSON.parse(json);
+	    json = JSON.stringify(jObj, undefined, 3);
+	    json = syntaxHighlight(json);
+	    return json;
+	}
+	
+	function syntaxHighlight(json) {
+	    json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+	    return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+	        var cls = 'number';
+	        if (/^"/.test(match)) {
+	            if (/:$/.test(match)) {
+	                cls = 'key';
+	            } else {
+	                cls = 'string';
+	            }
+	        } else if (/true|false/.test(match)) {
+	            cls = 'boolean';
+	        } else if (/null/.test(match)) {
+	            cls = 'null';
+	        }
+	        return '<span class="' + cls + '">' + match + '</span>';
+	    });
+	}
+	
+	// function formatXml(xml) {
+	//     let padNumber = 2;
+	//     var formatted = '';
+	//     var reg = /(>)(<)(\/*)/g;
+	//     xml = xml.replace(reg, '$1\r\n$2$3');
+	//     var pad = 0;
+	//     xml.split('\r\n').forEach(function (node, index) {
+	//         var indent = 0;
+	//         if (node.match(/.+<\/\w[^>]*>$/)) {
+	//             indent = 0;
+	//         } else if (node.match(/^<\/\w/)) {
+	//             if (pad != 0) {
+	//                 pad -= padNumber;
+	//             }
+	//         } else if (node.match(/^<\w[^>]*[^\/]>.*$/)) {
+	//             indent = padNumber;
+	//         } else {
+	//             indent = 0;
+	//         }
+	//
+	//         var padding = '';
+	//         for (var i = 0; i < pad; i++) {
+	//             padding += ' ';
+	//         }
+	//
+	//         formatted += padding + node + '\r\n';
+	//         pad += indent;
+	//     });
+	//
+	//     return formatted;
+	// }
+	//
 	
 	var Headers = function (_React$Component4) {
 	    _inherits(Headers, _React$Component4);
